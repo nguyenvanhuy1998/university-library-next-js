@@ -70,7 +70,7 @@ const AuthForm = <T extends FieldValues>({
                             name={field as Path<T>}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="capitalize">
+                                    <FormLabel>
                                         {
                                             FIELD_NAMES[
                                                 field.name as keyof typeof FIELD_NAMES
@@ -79,7 +79,9 @@ const AuthForm = <T extends FieldValues>({
                                     </FormLabel>
                                     <FormControl>
                                         {field.name === "universityCard" ? (
-                                            <FileUpload />
+                                            <FileUpload
+                                                onFileChange={field.onChange}
+                                            />
                                         ) : (
                                             <Input
                                                 type={
