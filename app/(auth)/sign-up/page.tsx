@@ -1,13 +1,9 @@
 "use client";
 import AuthForm from "@/components/AuthForm";
+import { signUp } from "@/lib/actions/auth";
 import { signUpSchema } from "@/lib/validations";
 
 const Page = () => {
-    const signUp = (params: AuthCredentials) => {
-        console.log({
-            params,
-        });
-    };
     return (
         <AuthForm
             type="SIGN_UP"

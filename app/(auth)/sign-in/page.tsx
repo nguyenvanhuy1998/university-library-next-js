@@ -1,12 +1,10 @@
 "use client";
 import AuthForm from "@/components/AuthForm";
+import { signInWithCredentials } from "@/lib/actions/auth";
 import { signInSchema } from "@/lib/validations";
 import React from "react";
 
 const Page = () => {
-    const signIn = (params: Pick<AuthCredentials, "email" | "password">) => {
-        console.log({ params });
-    };
     return (
         <AuthForm
             type="SIGN_IN"
@@ -15,7 +13,7 @@ const Page = () => {
                 email: "",
                 password: "",
             }}
-            onSubmit={signIn}
+            onSubmit={signInWithCredentials}
         />
     );
 };
