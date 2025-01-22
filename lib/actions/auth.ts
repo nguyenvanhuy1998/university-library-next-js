@@ -5,11 +5,20 @@ import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { hash } from "bcryptjs";
 import { eq } from "drizzle-orm";
+import { headers } from "next/headers";
+import ratelimit from "../ratelimit";
+import { redirect } from "next/navigation";
 
 export const signInWithCredentials = async (
     params: Pick<AuthCredentials, "email" | "password">
 ) => {
     const { email, password } = params;
+    const ip = (await headers()).get("x-forwarded-for") || "172.20.10.2";
+    const { success } = await ratelimit.limit(ip);
+    console.log({ success });
+    if (!success) {
+        return redirect("/too-fast");
+    }
     try {
         const result = await signIn("credentials", {
             email,
@@ -35,6 +44,12 @@ export const signInWithCredentials = async (
 };
 export const signUp = async (params: AuthCredentials) => {
     const { email, fullName, password, universityCard, universityId } = params;
+
+    const ip = (await headers()).get("x-forwarded-for") || "172.20.10.2";
+    const { success } = await ratelimit.limit(ip);
+    if (!success) {
+        return redirect("/too-fast");
+    }
 
     // Kiểm tra user đã tồn tại hay chưa?
     const existingUser = await db
